@@ -3,17 +3,22 @@ name = "enter-causal"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = "==3.11.13"
 dependencies = [
     "numpy==1.26.4",
     "pandas",
+    "bnlearn",
     "dowhy>=0.13",
+    "causal-learn",
     "econml",
     "fastapi>=0.117.1",
     "ipython>=9.6.0",
     "pydot",
     "pygraphviz",
-    "pytest"
+    "pytest",
+    "jupyter",
+    "pooch",
+    "tabulate"
 ]
 
 
