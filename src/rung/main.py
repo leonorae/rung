@@ -26,4 +26,4 @@ app = FastAPI(
 app.include_router(analyses.router, prefix="/api/analyses")
 @app.get("/")
 def read_root():
-    return {"Hello": "World"}
+    return {"message": "Rung API -- causal lab"}
