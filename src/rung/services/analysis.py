@@ -3,14 +3,14 @@ from datetime import datetime
 import pandas as pd
 
 from rung.schemas.analysis import Analysis
-from rung.main import engine
+from rung.database import engine
 
 def process_analysis(analysis_id: str):
     """analysis background service"""
     with Session(engine) as session:
         analysis = session.get(Analysis, analysis_id)
 
-        if analysis & analysis.status=="pending":
+        if analysis and (analysis.status=="pending"):
             try:
                 analysis.status = "processing"
                 session.add(analysis)
