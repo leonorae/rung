@@ -2251,7 +2251,7 @@ wheels = [
 [[package]]
 name = "rung"
 version = "0.1.0"
-source = { virtual = "." }
+source = { editable = "." }
 dependencies = [
     { name = "bnlearn" },
     { name = "causal-learn" },
@@ -2300,6 +2300,7 @@ requires-dist = [
     { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.1.0" },
     { name = "sqlmodel", specifier = ">=0.0.27" },
     { name = "tabulate" },
+    { name = "uvicorn" },
     { name = "uvicorn", extras = ["standard"], specifier = ">=0.38.0" },
 ]
 provides-extras = ["dev"]
