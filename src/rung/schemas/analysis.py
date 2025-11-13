@@ -23,5 +23,5 @@ class Analysis(SQLModel, table=True):
     # parameters: dict = Field(default_factory=dict)
 
     # Results
-    # results: Optional[dict] = None
-    # error: Optional[str] = None
+    results: Optional[dict] = None
+    error: Optional[str] = None
