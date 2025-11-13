@@ -1,18 +1,27 @@
 from sqlmodel import SQLModel, Field
-from typing import Optional, Literal
+from typing import Optional
+from enum import Enum
 
 from datetime import datetime, timezone
 import uuid
+
+class AnalysisStatus(str, Enum):
+    pending = "pending"
+    processing = "processing"
+    complete = "complete"
+    failed = "failed"
 
 class Analysis(SQLModel, table=True):
     # IDs
     id: Optional[int] = Field(default=None, primary_key=True)
     uuid: str = Field(default_factory=lambda: str(uuid.uuid4()))
+
+
     # Time
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     completed_at: Optional[datetime] = None
 
-    status: Literal["pending", "processing", "complete", "failed"] = "pending"
+    status: AnalysisStatus = Field(default=AnalysisStatus.pending)
 
     # File
     filename: str
