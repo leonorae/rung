@@ -31,7 +31,7 @@ dependencies = [
     "uvicorn"
 
 ]
-[project.optional-dependencies]
+[dependency-groups]
 dev = [
     "pytest>=7.0.0",
     "httpx>=0.25.0",  # for testing FastAPI

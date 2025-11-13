@@ -2282,7 +2282,7 @@ dependencies = [
     { name = "uvicorn", extra = ["standard"] },
 ]
 
-[package.optional-dependencies]
+[package.dev-dependencies]
 dev = [
     { name = "httpx" },
     { name = "pytest" },
@@ -2296,7 +2296,6 @@ requires-dist = [
     { name = "dowhy", specifier = ">=0.13" },
     { name = "econml" },
     { name = "fastapi", specifier = ">=0.121.1" },
-    { name = "httpx", marker = "extra == 'dev'", specifier = ">=0.25.0" },
     { name = "ipython", specifier = ">=9.6.0" },
     { name = "jupyter" },
     { name = "numpy", specifier = "==1.26.4" },
@@ -2306,15 +2305,19 @@ requires-dist = [
     { name = "pydantic-settings" },
     { name = "pydot" },
     { name = "pygraphviz" },
-    { name = "pytest", marker = "extra == 'dev'", specifier = ">=7.0.0" },
     { name = "python-multipart" },
-    { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.1.0" },
     { name = "sqlmodel", specifier = ">=0.0.27" },
     { name = "tabulate" },
     { name = "uvicorn" },
     { name = "uvicorn", extras = ["standard"], specifier = ">=0.38.0" },
 ]
-provides-extras = ["dev"]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "httpx", specifier = ">=0.25.0" },
+    { name = "pytest", specifier = ">=7.0.0" },
+    { name = "ruff", specifier = ">=0.1.0" },
+]
 
 [[package]]
 name = "scikit-learn"
