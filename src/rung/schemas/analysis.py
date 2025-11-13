@@ -1,4 +1,5 @@
-from sqlmodel import SQLModel, Field
+from sqlmodel import SQLModel, Field, Column
+from sqlalchemy import JSON
 from typing import Optional
 from enum import Enum
 
@@ -28,9 +29,9 @@ class Analysis(SQLModel, table=True):
     file_path: str
 
     # Analysis config
-    # analysis_type: str  # "discovery", "ate", etc.
-    # parameters: dict = Field(default_factory=dict)
+    # analysis_type: str
+    parameters: dict = Field(default_factory=dict, sa_column=Column(JSON))
 
     # Results
-    results: Optional[dict] = None
+    results: Optional[dict] = Field(default=None, sa_column=Column(JSON))
     error: Optional[str] = None
