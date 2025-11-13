@@ -14,8 +14,7 @@ class AnalysisStatus(str, Enum):
 
 class Analysis(SQLModel, table=True):
     # IDs
-    id: Optional[int] = Field(default=None, primary_key=True)
-    uuid: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    uuid: str = Field(default_factory=lambda: str(uuid.uuid4()), primary_key=True)
 
 
     # Time
