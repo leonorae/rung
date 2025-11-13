@@ -6,7 +6,7 @@ from rung.config import settings
 
 engine = create_engine(settings.database_url, echo=True)
 
-from rung.api import analyses
+import rung.api.analyses as analyses
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
