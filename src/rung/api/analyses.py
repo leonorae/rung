@@ -22,7 +22,11 @@ async def create_analysis(
         content = await file.read()
         f.write(content)
 
-    analysis = process_analysis(file_uuid)
+    analysis = Analysis(
+        filename=file.filename,
+        file_path=str(file_path),
+        status="pending"
+    )
 
     session.add(analysis)
     session.commit()
