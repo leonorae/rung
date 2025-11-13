@@ -3,9 +3,10 @@ from sqlmodel import SQLModel, create_engine
 from contextlib import asynccontextmanager
 
 from rung.config import settings
-from rung.api import analyses
 
 engine = create_engine(settings.database_url, echo=True)
+
+from rung.api import analyses
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
