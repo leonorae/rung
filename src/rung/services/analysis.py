@@ -2,8 +2,9 @@ from sqlmodel import Session, select
 from datetime import datetime
 import pandas as pd
 
-from rung.schemas.analysis import Analysis, AnalysisStatus
 from rung.database import engine
+from rung.schemas.analysis import Analysis, AnalysisStatus
+from rung.causal.discovery import run_causal_discovery
 
 def process_analysis(analysis_id: str):
     """analysis background service"""
@@ -21,10 +22,27 @@ def process_analysis(analysis_id: str):
 
             df = pd.read_csv(analysis.file_path)
 
-            results = {
-                "rows": len(df),
-                "columns": len(df.columns),
-            }
+
+            if analysis.analysis_type == "discovery":
+                method = analysis.parameters.get("method", "pc")
+                alpha = analysis.parameters.get("alpha", 0.05)
+
+                results = run_causal_discovery(
+                    df,
+                    method=method,
+                    alpha=alpha
+                )
+
+                results["data_stats"] = {
+                    "n_rows": len(df),
+                    "n_columns": len(df.columns),
+                    "columns": list(df.columns)
+                }
+            else:
+                results = {
+                    "error": f"Unknown analysis type: {analysis.analysis_type}"
+                }
+
 
             analysis.status = AnalysisStatus.complete
             analysis.results = results

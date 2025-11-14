@@ -1,6 +1,6 @@
-from fastapi import APIRouter, UploadFile, File, BackgroundTasks, Depends, HTTPException
+from fastapi import APIRouter, UploadFile, File, BackgroundTasks, Depends, HTTPException, Form
 from sqlmodel import Session, select
-from typing import List
+from typing import List, Optional
 import uuid
 
 from rung.config import settings
@@ -11,6 +11,9 @@ router = APIRouter()
 @router.post("/", response_model=Analysis)
 async def create_analysis(
         file: UploadFile = File(...),
+        analysis_type: str = Form("discovery"),
+        method: Optional[str] = Form("pc"),
+        alpha: Optional[float] = Form(0.05),
         background_tasks: BackgroundTasks = BackgroundTasks(),
         session: Session = Depends(get_session)
 ):
@@ -22,12 +25,18 @@ async def create_analysis(
         content = await file.read()
         f.write(content)
 
+    parameters = {}
+    if analysis_type == "discovery":
+        parameters["method"] = method
+        parameters["alpha"] = alpha
+
     analysis = Analysis(
         filename=file.filename,
+        analysis_type=analysis_type,
+        parameters=parameters,
         file_path=str(file_path),
         status="pending"
     )
-
     session.add(analysis)
     session.commit()
     session.refresh(analysis)
