@@ -6,13 +6,11 @@ from fastapi.testclient import TestClient
 test_data = "tests/test_data.csv"
 
 def test_root(client: TestClient):
-    """Test root endpoint"""
     response = client.get("/")
     assert response.status_code == 200
     assert response.json() == {"message": "Rung API -- causal lab"}
 
 def test_create_analysis(client: TestClient):
-    """Test create analysis endpoint"""
     csv_content = b"treatment,outcome,age\n1,10.5,25\n0,8.2,30\n1,12.1,28\n"
     files = {"file": ("test.csv", io.BytesIO(csv_content), "text/csv")}
 
@@ -41,3 +39,17 @@ def test_get_nonexistent_analysis(client: TestClient):
     """Test 404 for nonexistent analysis"""
     response = client.get("/api/analyses/nonexistent-id")
     assert response.status_code == 404
+
+
+def test_list_analyses(client: TestClient):
+    csv_content = b"treatment,outcome\n1,10\n0,8\n"
+    files = {"file": ("test.csv", io.BytesIO(csv_content), "text/csv")}
+    client.post("/api/analyses/", files=files)
+    client.post("/api/analyses/", files=files)
+
+    response = client.get("/api/analyses/")
+    assert response.status_code == 200
+    data = response.json()
+    assert len(data) >= 2
+    assert all("uuid" in item for item in data)
+
