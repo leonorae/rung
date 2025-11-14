@@ -2,6 +2,9 @@
 
 Causal discovery and inference lab
 
+## Project Structure
+
+
 ## Setup
 Uses pyproject.toml and `uv` for dependencies.
 

@@ -7,6 +7,10 @@ class Settings(BaseSettings):
     example_dir: Path = Path("data/examples")
     upload_dir: Path = Path("data/uploads")
 
+    database_url: str = "sqlite:///./rung.db"
+
+    max_upload_size_mb: int = 100
+
     class Config:
         env_file = ".env"
 
