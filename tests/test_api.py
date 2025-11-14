@@ -23,3 +23,21 @@ def test_create_analysis(client: TestClient):
     assert data["filename"] == "test.csv"
     assert data["status"] == "pending"
 
+
+def test_get_analysis(client: TestClient):
+    csv_content = b"treatment,outcome\n1,10\n0,8\n"
+    files = {"file": ("test.csv", io.BytesIO(csv_content), "text/csv")}
+    create_response = client.post("/api/analyses/", files=files)
+    analysis_uuid = create_response.json()["uuid"]
+
+    response = client.get(f"/api/analyses/{analysis_uuid}")
+    assert response.status_code == 200
+    data = response.json()
+    assert data["uuid"] == analysis_uuid
+    assert data["filename"] == "test.csv"
+
+
+def test_get_nonexistent_analysis(client: TestClient):
+    """Test 404 for nonexistent analysis"""
+    response = client.get("/api/analyses/nonexistent-id")
+    assert response.status_code == 404
