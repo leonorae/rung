@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from sqlmodel import SQLModel, create_engine
+from sqlmodel import SQLModel
 from contextlib import asynccontextmanager
 
 from rung.config import settings
