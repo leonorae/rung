@@ -14,12 +14,13 @@ def session_fixture():
         poolclass=StaticPool,
     )
     SQLModel.metadata.create_all(engine)
-    get_session()
+    with Session(engine) as session:
+        yield session
 
 @pytest.fixture(name="client")
 def client_fixture(session: Session):
     def get_session_override():
-        return session
+        yield session
 
     app.dependency_overrides[get_session] = get_session_override # type: ignore
     client = TestClient(app)
