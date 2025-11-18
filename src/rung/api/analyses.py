@@ -17,7 +17,7 @@ async def create_analysis(
         background_tasks: BackgroundTasks = BackgroundTasks(),
         session: Session = Depends(get_session)
 ):
-    """Write uploaded file, track in DB, and run analysis service"""
+    """Write uploaded file, track job in DB, and run analysis service"""
     file_uuid = str(uuid.uuid4())
     file_path = settings.upload_dir / f"{file_uuid}_{file.filename}"
 
@@ -37,6 +37,7 @@ async def create_analysis(
         file_path=str(file_path),
         status="pending"
     )
+
     session.add(analysis)
     session.commit()
     session.refresh(analysis)
@@ -45,9 +46,9 @@ async def create_analysis(
 
     return analysis
 
-@router.get("/{analysis_id}", response_model=Analysis)
-def get_analysis(analysis_id: str, session: Session = Depends(get_session)):
-    analysis = session.get(Analysis, analysis_id)
+@router.get("/{analysis_uuid}", response_model=Analysis)
+def get_analysis(analysis_uuid: str, session: Session = Depends(get_session)):
+    analysis = session.get(Analysis, analysis_uuid)
     if not analysis:
         raise HTTPException(status_code=404, detail="Analysis not found")
     return analysis
