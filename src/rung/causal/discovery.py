@@ -63,3 +63,4 @@ def run_causal_discovery(
 def get_supported_methods() -> List[str]:
     """Return list of supported causal discovery methods"""
     return ["pc", "hillclimb", "chow-liu"]
+

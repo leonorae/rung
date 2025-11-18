@@ -16,7 +16,6 @@ class Analysis(SQLModel, table=True):
     # IDs
     uuid: str = Field(default_factory=lambda: str(uuid.uuid4()), primary_key=True)
 
-
     # Time
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     completed_at: Optional[datetime] = None
