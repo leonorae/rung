@@ -3,6 +3,8 @@ import time
 
 from fastapi.testclient import TestClient
 
+from rung.config import settings
+
 test_data = "tests/test_data.csv"
 
 def test_root(client: TestClient):
@@ -10,12 +12,23 @@ def test_root(client: TestClient):
     assert response.status_code == 200
     assert response.json() == {"message": "Rung API -- causal lab"}
 
-def test_create_analysis(client: TestClient):
+def test_upload_analysis(client: TestClient):
     """this only tests the creation, not the completion"""
     csv_content = b"treatment,outcome,age\n1,10.5,25\n0,8.2,30\n1,12.1,28\n"
-    files = {"file": ("test.csv", io.BytesIO(csv_content), "text/csv")}
+    file = {"file": ("test.csv", io.BytesIO(csv_content), "text/csv")}
 
-    response = client.post("/api/analyses/", files=files,)
+    response = client.post("/api/analyses/upload", files=file,)
+    assert response.status_code == 200
+    data = response.json()
+    assert "uuid" in data
+    assert data["filename"] == "test.csv"
+    assert data["status"] == "pending"
+
+def test_example_analysis(client: TestClient):
+    """test the creation of an analysis job with an example dataset"""
+    params = {"example_name": "test.csv"}
+
+    response = client.post("/api/analyses/example", data=params)
     assert response.status_code == 200
     data = response.json()
     assert "uuid" in data
@@ -25,12 +38,13 @@ def test_create_analysis(client: TestClient):
 def test_get_analysis(client: TestClient):
     csv_content = b"treatment,outcome\n1,10\n0,8\n"
     files = {"file": ("test.csv", io.BytesIO(csv_content), "text/csv")}
-    create_response = client.post("/api/analyses/", files=files)
+    create_response = client.post("/api/analyses/upload", files=files)
     analysis_uuid = create_response.json()["uuid"]
 
     response = client.get(f"/api/analyses/{analysis_uuid}")
     assert response.status_code == 200
     data = response.json()
+
     assert data["uuid"] == analysis_uuid
     assert data["filename"] == "test.csv"
 
@@ -40,13 +54,12 @@ def test_get_nonexistent_analysis(client: TestClient):
     response = client.get("/api/analyses/nonexistent-id")
     assert response.status_code == 404
 
-
 def test_list_analyses(client: TestClient):
     """test two analyses"""
     csv_content = b"treatment,outcome\n1,10\n0,8\n"
     files = {"file": ("test.csv", io.BytesIO(csv_content), "text/csv")}
-    client.post("/api/analyses/", files=files)
-    client.post("/api/analyses/", files=files)
+    client.post("/api/analyses/upload", files=files)
+    client.post("/api/analyses/upload", files=files)
 
     response = client.get("/api/analyses/")
     assert response.status_code == 200

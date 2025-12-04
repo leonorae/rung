@@ -16,7 +16,6 @@ class Analysis(SQLModel, table=True):
     # IDs
     uuid: str = Field(default_factory=lambda: str(uuid.uuid4()), primary_key=True)
 
-
     # Time
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     completed_at: Optional[datetime] = None
@@ -28,7 +27,8 @@ class Analysis(SQLModel, table=True):
     file_path: str
 
     # Analysis config
-    # analysis_type: str
+    preprocess_type: str
+    analysis_type: str
     parameters: dict = Field(default_factory=dict, sa_column=Column(JSON))
 
     # Results

@@ -6,6 +6,7 @@ class Settings(BaseSettings):
     # Data Paths
     example_dir: Path = Path("data/examples")
     upload_dir: Path = Path("data/uploads")
+    model_dir: Path = Path("data/models")
 
     database_url: str = "sqlite:///./rung.db"
 
