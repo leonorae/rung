@@ -2,12 +2,28 @@ import pandas as pd
 import bnlearn as bn
 from typing import Dict, Any, List, Optional
 
+from pandas import DataFrame
+
+from rung.config import settings
+
+def run_preprocess(
+        df: pd.DataFrame,
+        method: str,
+        filename: str) -> DataFrame:
+
+    match method:
+        case "onehot":
+            dfhot, dfnum = bn.df2onehot(df)
+
+            df = dfnum
+
+    return df
+
 def run_causal_discovery(
     df: pd.DataFrame,
     method: str = "pc",
     alpha: float = 0.05,
-    max_iter: int = 100
-) -> Dict[str, Any]:
+    max_iter: int = 100) -> Dict[str, Any]:
     if method == "pc":
         model = bn.structure_learning.fit(
             df,

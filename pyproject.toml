@@ -11,25 +11,20 @@ dependencies = [
     "pydantic-settings",
     "sqlmodel>=0.0.27",
     "python-multipart",
-
     "pandas>=2.0.0",
     "numpy==1.26.4",
-
     "bnlearn",
     "dowhy>=0.13",
     "causal-learn",
     "econml",
     "pydot",
     "pygraphviz",
-
     "pooch",
     "tabulate",
-
     "ipython>=9.6.0",
     "jupyter",
-
-    "uvicorn"
-
+    "uvicorn",
+    "datasets>=4.0.0",
 ]
 [dependency-groups]
 dev = [

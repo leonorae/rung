@@ -27,6 +27,7 @@ class Analysis(SQLModel, table=True):
     file_path: str
 
     # Analysis config
+    preprocess_type: str
     analysis_type: str
     parameters: dict = Field(default_factory=dict, sa_column=Column(JSON))
 
