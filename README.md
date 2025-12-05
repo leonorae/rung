@@ -19,4 +19,9 @@ For Windows, use the following command to install `pygraphviz` so it can locate 
 uv pip install --config-settings="--global-option=build_ext" --config-settings="--global-option=-IC:\Program Files\Graphviz\include" --config-settings="--global-option=-LC:\Program Files\Graphviz\lib" pygraphviz
 ```
 
-then, use `uv sync` to create a venv, then activate it to enter the environment
+### Running
+then, use `uv sync` to create a venv, then activate it to enter the environment and use `uv run uvicorn rung.main:app` to run
+
+## Use
+
+Use the analyses/upload method to upload data, indicate the preprocessing to be applied, discovery algorithm to use, and acceptable alpha for pruning edges.
